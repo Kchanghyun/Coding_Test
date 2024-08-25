@@ -1,26 +1,31 @@
 import sys
-sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
+from collections import deque
 
-# dfs 함수
-def dfs(graph, v, visited):
+N, M = map(int, sys.stdin.readline().split())
+
+graph = [[0] * (N+1) for _ in range(N+1)]
+
+for i in range(M):
+    x, y = map(int, sys.stdin.readline().split())
+    graph[x][y] = 1
+    graph[y][x] = 1
+
+def bfs(v):
+    queue = deque([v])
     visited[v] = True
-    for i in graph[v]:
-        if not visited[i]:
-            dfs(graph, i, visited)
+    while queue:
+        x = queue.popleft()
+        for i in range(1, N+1):
+            if not visited[i] and graph[x][i]:
+                queue.append(i)
+                visited[i] = True
 
-n, m = map(int, input().split()) # 정점의 개수, 간선의 개수
-graph = [[] for _ in range(n+1)]
-for i in range(m):
-    u, v = map(int, input().split())
-    graph[u].append(v)
-    graph[v].append(u)
+cnt = 0
+visited = [False] * (N+1)
 
-count = 0 # 연결 노드의 수
-visited = [False] * (n+1)
-for i in range(1, n+1):
+for i in range(1, N+1):
     if not visited[i]:
-        dfs(graph, i, visited)
-        count += 1 # dfs 한 번 끝날 때마다 count+1
+        cnt += 1
+        bfs(i)
 
-print(count)
+print(cnt)
