@@ -4,13 +4,17 @@ n = int(sys.stdin.readline())
 m = int(sys.stdin.readline())
 s = sys.stdin.readline().strip()
 
-P = ('IO' * n) + 'I'
-# print('P = {}'.format(P))
-cnt = 0
-for i in range(len(s)):
-    if s[i] == 'I':
-        # print('s[{}:{}+len(P)] = {}'.format(i, i, s[i:i+len(P)]))
-        if s[i:i+len(P)] == P:
-            cnt += 1
+ans, i, cnt = 0, 0, 0
 
-print(cnt)
+while i < m-1:
+    if s[i:i+3] == 'IOI':
+        i += 2
+        cnt += 1
+        if cnt == n:
+            ans += 1
+            cnt -= 1
+    else:
+        i += 1
+        cnt = 0
+
+print(ans)
